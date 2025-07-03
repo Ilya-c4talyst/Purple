@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 	"purple/validation/config"
-	"purple/validation/internal/email"
+	"purple/validation/internal/verify"
 )
 
 func main() {
@@ -12,7 +12,7 @@ func main() {
 	config := config.NewConfig()
 
 	router := http.NewServeMux()
-	email.NewEmailHandler(router, config)
+	verify.NewEmailHandler(router, config)
 
 	server := http.Server{
 		Addr:    ":8080",

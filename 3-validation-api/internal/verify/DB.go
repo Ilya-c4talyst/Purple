@@ -1,3 +1,3 @@
-package email
+package verify
 
 var DB = []string{}
