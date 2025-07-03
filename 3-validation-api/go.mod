@@ -1,4 +1,4 @@
-module purple/email_api
+module purple/validation
 
 go 1.24.4
 

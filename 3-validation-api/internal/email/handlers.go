@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-	"purple/email_api/config"
-	"purple/email_api/pkg/utils"
+	"purple/validation/config"
+	"purple/validation/pkg/utils"
 	"slices"
 	"strings"
 )
@@ -25,7 +25,7 @@ func NewEmailHandler(mux *http.ServeMux, config *config.Config) {
 		},
 	}
 	mux.HandleFunc("POST /send", handler.Send())
-	mux.HandleFunc("GET /verify/", handler.Verify())
+	mux.HandleFunc("GET /verify/{hash}", handler.Verify())
 }
 
 func (e *EmailHandler) Send() http.HandlerFunc {
@@ -47,7 +47,12 @@ func (e *EmailHandler) Send() http.HandlerFunc {
 		DB = append(DB, hash)
 		log.Println("Хэш добавлен в БД")
 
-		utils.SendMail(req.Email, hash, e.deps.config.Email, e.deps.config.Password, e.deps.config.Address)
+		err = utils.SendMail(req.Email, hash, e.deps.config.Email, e.deps.config.Password, e.deps.config.Address)
+
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			json.NewEncoder(w).Encode(map[string]string{"err": err.Error()})
+		}
 
 		log.Println("Email с верификацией отправлен")
 

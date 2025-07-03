@@ -18,10 +18,16 @@ func GenerateHash() string {
 	return hash
 }
 
-func SendMail(emailTo string, hash string, emailOut string, password string, address string) {
+func SendMail(emailTo string, hash string, emailOut string, password string, address string) error {
 	e := email.NewEmail()
 	e.From = "<" + emailOut + ">"
 	e.To = []string{emailTo}
 	e.Text = []byte("Перейдите по ссылке для подтверждения: http://localhost:8080/verify/" + hash)
-	e.Send("smtp.yandex.ru:587", smtp.PlainAuth("", emailOut, password, address))
+	err := e.Send("smtp.yandex.ru:587", smtp.PlainAuth("", emailOut, password, address))
+
+	if err != nil {
+		return err
+	}
+	return nil
+
 }

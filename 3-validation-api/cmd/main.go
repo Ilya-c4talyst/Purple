@@ -3,8 +3,8 @@ package main
 import (
 	"log"
 	"net/http"
-	"purple/email_api/config"
-	"purple/email_api/internal/email"
+	"purple/validation/config"
+	"purple/validation/internal/email"
 )
 
 func main() {
@@ -19,6 +19,7 @@ func main() {
 		Handler: router,
 	}
 
+	log.Println("Starting server")
 	err := server.ListenAndServe()
 
 	if err != nil {
