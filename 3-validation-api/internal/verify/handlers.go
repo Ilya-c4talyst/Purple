@@ -1,11 +1,11 @@
 package verify
 
 import (
+	"3-validation-api/config"
+	"3-validation-api/pkg/utils"
 	"encoding/json"
 	"log"
 	"net/http"
-	"purple/validation/config"
-	"purple/validation/pkg/utils"
 	"slices"
 )
 

@@ -1,4 +1,4 @@
-module purple/validation
+module 3-validation-api
 
 go 1.24.4
 

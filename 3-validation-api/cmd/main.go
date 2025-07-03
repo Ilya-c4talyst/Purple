@@ -1,10 +1,10 @@
 package main
 
 import (
+	"3-validation-api/config"
+	"3-validation-api/internal/verify"
 	"log"
 	"net/http"
-	"purple/validation/config"
-	"purple/validation/internal/verify"
 )
 
 func main() {
