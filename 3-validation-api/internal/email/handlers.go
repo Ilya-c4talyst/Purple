@@ -7,7 +7,6 @@ import (
 	"purple/validation/config"
 	"purple/validation/pkg/utils"
 	"slices"
-	"strings"
 )
 
 type EmailHandler struct {
@@ -64,15 +63,8 @@ func (e *EmailHandler) Send() http.HandlerFunc {
 
 func (e *EmailHandler) Verify() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		path := r.URL.Path
-		parts := strings.Split(path, "/")
 
-		if len(parts) < 2 {
-			http.NotFound(w, r)
-			return
-		}
-
-		hash := parts[len(parts)-1]
+		hash := r.PathValue("hash")
 
 		if slices.Contains(DB, hash) {
 			w.WriteHeader(http.StatusAccepted)
