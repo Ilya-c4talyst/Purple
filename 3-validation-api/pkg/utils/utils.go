@@ -23,7 +23,7 @@ func SendMail(emailTo string, hash string, emailOut string, password string, add
 	e.From = "<" + emailOut + ">"
 	e.To = []string{emailTo}
 	e.Text = []byte("Перейдите по ссылке для подтверждения: http://localhost:8080/verify/" + hash)
-	err := e.Send("smtp.yandex.ru:587", smtp.PlainAuth("", emailOut, password, "smtp.yandex.ru"))
+	err := e.Send(address+"587", smtp.PlainAuth("", emailOut, password, address))
 
 	if err != nil {
 		return err

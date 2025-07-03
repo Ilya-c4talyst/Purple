@@ -52,6 +52,7 @@ func (e *EmailHandler) Send() http.HandlerFunc {
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			json.NewEncoder(w).Encode(map[string]string{"err": err.Error()})
+			return
 		}
 
 		log.Println("Email с верификацией отправлен")
