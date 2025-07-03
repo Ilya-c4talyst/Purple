@@ -10,6 +10,7 @@ import (
 var Letters string = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 func GenerateHash() string {
+	// В версии 1.24 seed не ставится
 	var hash string
 	for range 5 {
 		hash += string(Letters[rand.Intn(len(Letters))])
@@ -23,7 +24,7 @@ func SendMail(emailTo string, hash string, emailOut string, password string, add
 	e.From = "<" + emailOut + ">"
 	e.To = []string{emailTo}
 	e.Text = []byte("Перейдите по ссылке для подтверждения: http://localhost:8080/verify/" + hash)
-	err := e.Send(address+"587", smtp.PlainAuth("", emailOut, password, address))
+	err := e.Send(address+":587", smtp.PlainAuth("", emailOut, password, address))
 
 	if err != nil {
 		return err
