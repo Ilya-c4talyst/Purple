@@ -65,7 +65,7 @@ func (e *EmailHandler) Verify() http.HandlerFunc {
 
 		for idx, mark := range DB {
 			if mark.Hash == hash {
-				w.WriteHeader(http.StatusAccepted)
+				w.WriteHeader(http.StatusOK)
 				w.Write([]byte("true"))
 				DB = utils.Remove(DB, idx)
 				return

@@ -19,16 +19,29 @@ type EmailConfig struct {
 
 func NewConfig() *Config {
 	err := godotenv.Load()
-
 	if err != nil {
-		log.Println("Error while getting .env")
+		log.Println("Error loading .env file")
+	}
+
+	email := os.Getenv("EMAIL")
+	password := os.Getenv("PASSWORD")
+	address := os.Getenv("ADDRESS")
+
+	if email == "" {
+		email = "default@example.com"
+	}
+	if password == "" {
+		password = "default_password"
+	}
+	if address == "" {
+		address = "smtp.gmail.com:465"
 	}
 
 	config := &Config{
 		Email: &EmailConfig{
-			os.Getenv("EMAIL"),
-			os.Getenv("PASSWORD"),
-			os.Getenv("ADDRESS"),
+			Email:    email,
+			Password: password,
+			Address:  address,
 		},
 	}
 
