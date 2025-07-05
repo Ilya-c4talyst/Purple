@@ -34,7 +34,7 @@ func NewConfig() *Config {
 		password = "default_password"
 	}
 	if address == "" {
-		address = "smtp.gmail.com:465"
+		address = "smtp.yandex.ru"
 	}
 
 	config := &Config{
