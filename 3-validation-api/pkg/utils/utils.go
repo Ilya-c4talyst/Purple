@@ -33,3 +33,7 @@ func SendMail(emailTo string, hash string, emailOut string, password string, add
 	return nil
 
 }
+
+func Remove[T any](slice []T, index int) []T {
+	return append(slice[:index], slice[index+1:]...)
+}

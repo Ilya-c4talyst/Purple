@@ -2,11 +2,11 @@ package verify
 
 import (
 	"3-validation-api/config"
+	requset "3-validation-api/pkg/request"
 	"3-validation-api/pkg/utils"
 	"encoding/json"
 	"log"
 	"net/http"
-	"slices"
 )
 
 type EmailHandler struct {
@@ -30,23 +30,16 @@ func NewEmailHandler(mux *http.ServeMux, config *config.Config) {
 func (e *EmailHandler) Send() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
-		var req struct {
-			Email string `json:"email"`
-		}
-
-		err := json.NewDecoder(r.Body).Decode(&req)
-
-		if err != nil {
-			http.Error(w, "Ошибка при чтении тела запроса", http.StatusBadRequest)
-			return
-		}
-		defer r.Body.Close()
+		requestSend, err := requset.HandleBody[RequestSend](&w, r)
 
 		hash := utils.GenerateHash()
-		DB = append(DB, hash)
+		DB = append(DB, RequestVerify{
+			Email: requestSend.Email,
+			Hash:  hash,
+		})
 		log.Println("Хэш добавлен в БД")
 
-		err = utils.SendMail(req.Email, hash, e.deps.config.Email, e.deps.config.Password, e.deps.config.Address)
+		err = utils.SendMail(requestSend.Email, hash, e.deps.config.Email, e.deps.config.Password, e.deps.config.Address)
 
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
@@ -66,12 +59,16 @@ func (e *EmailHandler) Verify() http.HandlerFunc {
 
 		hash := r.PathValue("hash")
 
-		if slices.Contains(DB, hash) {
-			w.WriteHeader(http.StatusAccepted)
-			json.NewEncoder(w).Encode(map[string]string{"message": "Welcome"})
-		} else {
-			w.WriteHeader(http.StatusUnauthorized)
-			json.NewEncoder(w).Encode(map[string]string{"message": "error"})
+		for idx, mark := range DB {
+			if mark.Hash == hash {
+				w.WriteHeader(http.StatusAccepted)
+				w.Write([]byte("true"))
+				DB = utils.Remove(DB, idx)
+				return
+			}
 		}
+		w.WriteHeader(http.StatusUnauthorized)
+		w.Write([]byte("false"))
+
 	}
 }
