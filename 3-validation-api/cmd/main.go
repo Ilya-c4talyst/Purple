@@ -15,7 +15,7 @@ func main() {
 	verify.NewEmailHandler(router, config)
 
 	server := http.Server{
-		Addr:    ":8080",
+		Addr:    ":8081",
 		Handler: router,
 	}
 

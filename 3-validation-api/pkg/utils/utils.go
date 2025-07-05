@@ -23,7 +23,7 @@ func SendMail(emailTo string, hash string, emailOut string, password string, add
 	e := email.NewEmail()
 	e.From = "<" + emailOut + ">"
 	e.To = []string{emailTo}
-	e.Text = []byte("Перейдите по ссылке для подтверждения: http://localhost:8080/verify/" + hash)
+	e.Text = []byte("Перейдите по ссылке для подтверждения: http://localhost:8081/verify/" + hash)
 	// EmailOut - отправитель, password - пароль SMTP, address - SMTP address
 	err := e.Send(address+":587", smtp.PlainAuth("", emailOut, password, address))
 

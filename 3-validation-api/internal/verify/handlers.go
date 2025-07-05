@@ -32,6 +32,10 @@ func (e *EmailHandler) Send() http.HandlerFunc {
 
 		requestSend, err := requset.HandleBody[RequestSend](&w, r)
 
+		if err != nil {
+			return
+		}
+
 		hash := utils.GenerateHash()
 		DB = append(DB, RequestVerify{
 			Email: requestSend.Email,
