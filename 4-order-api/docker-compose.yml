@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest  # Используем последний образ PostgreSQL
+    container_name: my-postgres  # Имя контейнера
+    restart: always  # Перезапускать контейнер, если он упадет
+    ports:
+      - "5432:5432"  # Пробрасываем порт 5432 из контейнера на порт 5432 хоста
+    environment:
+      POSTGRES_USER: myuser  # Имя пользователя PostgreSQL
+      POSTGRES_PASSWORD: mypassword  # Пароль пользователя PostgreSQL
+      POSTGRES_DB: mydb  # Имя базы данных
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Монтируем том для хранения данных
+
+volumes:
+  postgres_data: # Объявление тома для постоянного хранения данных
