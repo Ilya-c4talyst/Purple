@@ -20,6 +20,10 @@ func main() {
 		log.Fatalf("Shutdown because %e", err)
 	}
 
-	migrations.AutoMigrate(dataBase)
+	err = migrations.AutoMigrate(dataBase)
+
+	if err != nil {
+		log.Fatalf("Shutdown because %e", err)
+	}
 
 }
