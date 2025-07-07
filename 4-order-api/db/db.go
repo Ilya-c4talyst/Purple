@@ -1,10 +1,9 @@
 package db
 
 import (
-	"order-api/config"
-
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"order-api/config"
 )
 
 type Db struct {
@@ -12,6 +11,7 @@ type Db struct {
 }
 
 func NewDb(config *config.DbConfig) (*Db, error) {
+	// Регистрация pq.StringArray
 	dataBase, err := gorm.Open(postgres.Open(config.DSN), &gorm.Config{})
 
 	if err != nil {
