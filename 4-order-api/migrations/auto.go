@@ -2,10 +2,10 @@ package migrations
 
 import (
 	"order-api/db"
-	"order-api/internal/models"
+	"order-api/internal/products"
 )
 
 func AutoMigrate(db *db.Db) error {
-	err := db.AutoMigrate(&models.Product{})
+	err := db.AutoMigrate(&products.Product{})
 	return err
 }
